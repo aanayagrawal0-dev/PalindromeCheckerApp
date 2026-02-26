@@ -1,31 +1,39 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
- * MAIN CLASS - UseCase5PalindromeCheckerApp
- * Use Case 5: Stack Based Palindrome Checker
- * This class validates a palindrome using a Stack (LIFO principle).
+ * MAIN CLASS - UseCase6PalindromeCheckerApp
+ * Use Case 6: Queue + Stack Fairness Check
+ * This class demonstrates palindrome validation using two different data structures:
+ * - Queue (FIFO - First In First Out)
+ * - Stack (LIFO - Last In First Out)
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
-        // Declare and initialize the input string
-        String input = "noon";
+        // Define the input string to validate
+        String input = "civic";
         
-        // Create a Stack to store characters
+        // Create a Queue to store characters in FIFO order
+        Queue<Character> queue = new LinkedList<>();
+        
+        // Create a Stack to store characters in LIFO order
         Stack<Character> stack = new Stack<>();
         
-        // Push each character of the string into the stack
+        // Insert each character into both queue and stack
         for (char c : input.toCharArray()) {
+            queue.add(c);
             stack.push(c);
         }
         
-        // Assume palindrome initially
+        // Flag to track palindrome status
         boolean isPalindrome = true;
         
-        // Iterate again through the original string and compare with popped characters
-        for (char c : input.toCharArray()) {
-            // Stack pops in reverse order, so we compare start of string with end
-            if (c != stack.pop()) {
+        // Compare characters until the queue becomes empty
+        while (!queue.isEmpty()) {
+            // queue.remove() gets the front, stack.pop() gets the back
+            if (!queue.remove().equals(stack.pop())) {
                 isPalindrome = false;
                 break;
             }
