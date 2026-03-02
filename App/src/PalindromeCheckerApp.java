@@ -24,6 +24,7 @@ public class PalindromeCheckerApp {
      * * @param args Command-line arguments
      */
     public static void main(String[] args) {
+        System.out.pritnln("I am a genius " );
         Scanner scanner = new Scanner(System.in);
         PalindromeService service = new PalindromeService();
 
@@ -76,3 +77,4 @@ class PalindromeService {
         return true; // All characters matched
     }
 }
+
