@@ -1,78 +1,89 @@
-import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * =========================================================
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - UseCase12PalindromeCheckerApp
  * =========================================================
- * * Use Case 11: Object-Oriented Palindrome Service
+ * * Use Case 12: Strategy Pattern for Palindrome Algorithms
  * * Description:
- * This class demonstrates palindrome validation using
- * object-oriented design.
- * * The palindrome logic is encapsulated inside a
- * PalindromeService class.
- * * This improves:
- * - Reusability
- * - Readability
- * - Separation of concerns
+ * This class demonstrates how different palindrome
+ * validation algorithms can be selected dynamically
+ * at runtime using the Strategy Design Pattern.
+ * * At this stage, the application:
+ * - Defines a common PalindromeStrategy interface
+ * - Implements a concrete Stack based strategy
+ * - Injects the strategy at runtime
+ * - Executes the selected algorithm
+ * * No performance comparison is done in this use case.
+ * The focus is purely on algorithm interchangeability.
+ * * The goal is to teach extensible algorithm design.
  * * @author Developer
- * @version 11.0
+ * @version 12.0
  */
-public class PalindromeCheckerApp {
+public class UseCase12PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC11.
-     * * @param args Command-line arguments
-     */
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        PalindromeService service = new PalindromeService();
+        String testInput = "racecar";
 
-        System.out.println("--- Palindrome Checker (OO Design) ---");
-        System.out.print("Enter a string to check: ");
-        String input = scanner.nextLine();
+        // Dynamic selection of the strategy (Injecting StackStrategy)
+        PalindromeStrategy strategy = new StackStrategy();
 
-        boolean isPalindrome = service.checkPalindrome(input);
+        boolean result = strategy.check(testInput);
 
-        if (isPalindrome) {
-            System.out.println("\"" + input + "\" is a palindrome.");
-        } else {
-            System.out.println("\"" + input + "\" is not a palindrome.");
-        }
-
-        scanner.close();
+        System.out.println("Input: " + testInput);
+        System.out.println("Is Palindrome (Stack Strategy): " + result);
     }
 }
 
 /**
- * Service class that contains palindrome logic.
+ * =========================================================
+ * INTERFACE - PalindromeStrategy
+ * =========================================================
+ * This interface defines a contract for all
+ * palindrome checking algorithms.
+ * * Any new algorithm must implement this interface
+ * and provide its own validation logic.
  */
-class PalindromeService {
+interface PalindromeStrategy {
+    boolean check(String input);
+}
+
+/**
+ * =========================================================
+ * CLASS - StackStrategy
+ * =========================================================
+ * This class provides a Stack based implementation
+ * of the PalindromeStrategy interface.
+ * * It uses LIFO behavior to reverse characters
+ * and compare them with the original sequence.
+ */
+class StackStrategy implements PalindromeStrategy {
 
     /**
-     * Checks whether the input string is a palindrome.
-     * * @param input Input string
+     * Implements palindrome validation using Stack.
+     * * @param input String to validate
      * @return true if palindrome, false otherwise
      */
-    public boolean checkPalindrome(String input) {
-        // Handle null or empty strings
+    @Override
+    public boolean check(String input) {
         if (input == null) return false;
 
-        // Clean the string (optional: removes spaces and converts to lowercase)
-        String cleanInput = input.replaceAll("\\s+", "").toLowerCase();
+        // Create a stack to store characters.
+        java.util.Stack<Character> stack = new java.util.Stack<>();
 
-        // Initialize pointers (As per your hint)
-        int start = 0;
-        int end = cleanInput.length() - 1;
-
-        // Compare characters moving inward
-        while (start < end) {
-            if (cleanInput.charAt(start) != cleanInput.charAt(end)) {
-                return false; // Characters don't match, not a palindrome
-            }
-            start++;
-            end--;
+        // Push each character of the input string onto the stack.
+        for (char c : input.toCharArray()) {
+            stack.push(c);
         }
 
-        return true; // All characters matched
+        // Compare characters by popping from the stack.
+        // Popping provides characters in Last-In-First-Out (LIFO) order (reversed).
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                return false; // Character mismatch
+            }
+        }
+
+        return true; // All characters matched in reverse order
     }
 }
