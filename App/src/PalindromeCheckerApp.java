@@ -1,39 +1,67 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.LinkedList;
 
 /**
- * MAIN CLASS - UseCase7PalindromeCheckerApp
- * Use Case 7: Deque Based Optimized Palindrome Checker
- * This class validates a palindrome using a Deque (Double Ended Queue).
- * It compares elements by removing them from both ends.
+ * =========================================================
+ * MAIN CLASS - UseCase8PalindromeCheckerApp
+ * =========================================================
+ *
+ * Use Case 8: Linked List Based Palindrome Checker
+ *
+ * Description:
+ * This class checks whether a string is a palindrome
+ * using a LinkedList.
+ *
+ * Characters are added to the list and then compared
+ * by removing elements from both ends:
+ *
+ * - removeFirst()
+ * - removeLast()
+ *
+ * This demonstrates how LinkedList supports
+ * double-ended operations for symmetric validation.
+ *
+ * @author Developer
+ * @version 8.0
  */
 public class PalindromeCheckerApp {
+
+    /**
+     * Application entry point for UC8.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
+
         // Define the input string
-        String input = "refer";
-        
-        // Create a Deque to store characters
-        Deque<Character> deque = new ArrayDeque<>();
-        
-        // Add each character to the deque
+        String input = "level";
+
+        // Create a LinkedList to store characters
+        LinkedList<Character> list = new LinkedList<>();
+
+        // Add each character to the LinkedList
         for (char c : input.toCharArray()) {
-            deque.addLast(c);
+            list.add(c);
         }
-        
-        // Flag to track palindrome result
+
+        // Flag to track palindrome state
         boolean isPalindrome = true;
-        
-        // Continue comparison while more than one element exists
-        while (deque.size() > 1) {
-            // Compare the first character and the last character
-            if (!deque.removeFirst().equals(deque.removeLast())) {
+
+        // Compare until only one or zero elements remain
+        while (list.size() > 1) {
+            char first = list.removeFirst();
+            char last = list.removeLast();
+
+            if (first != last) {
                 isPalindrome = false;
                 break;
             }
         }
-        
-        // Display the result
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+
+        // Output result
+        if (isPalindrome) {
+            System.out.println("\"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("\"" + input + "\" is NOT a palindrome.");
+        }
     }
 }
